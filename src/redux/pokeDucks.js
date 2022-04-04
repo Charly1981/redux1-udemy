@@ -32,43 +32,67 @@ export default function pokeReducer(state = dataInicial, action) {
 
 // acciones
 export const obtenerPokemonesAccion = () => async (dispatch, getState) => {
-  try {
-    const res = await axios.get(
-      `https://pokeapi.co/api/v2/pokemon?offset=0&limit=20`
-    );
+  if (localStorage.getItem("ofset=0")) {
     dispatch({
       type: OBTENER_POKEMONES_EXITO,
-      payload: res.data,
+      payload: JSON.parse(localStorage.getItem("ofset=0")),
     });
-  } catch (error) {
-    console.log(error);
+  } else {
+    try {
+      const res = await axios.get(
+        `https://pokeapi.co/api/v2/pokemon?offset=0&limit=20`
+      );
+      dispatch({
+        type: OBTENER_POKEMONES_EXITO,
+        payload: res.data,
+      });
+      localStorage.setItem("ofset=0", JSON.stringify(res.data));
+    } catch (error) {
+      console.log(error);
+    }
   }
 };
 
 export const siguientePokemonAccion = () => async (dispatch, getState) => {
   const { next } = getState().pokemones;
 
-  try {
-    const res = await axios.get(next);
+  if (localStorage.getItem(next)) {
     dispatch({
-      type: SIGUIENTE_POKEMONES_EXITO,
-      payload: res.data,
+      type: OBTENER_POKEMONES_EXITO,
+      payload: JSON.parse(localStorage.getItem(next)),
     });
-  } catch (error) {
-    console.log(error);
+  } else {
+    try {
+      const res = await axios.get(next);
+      dispatch({
+        type: SIGUIENTE_POKEMONES_EXITO,
+        payload: res.data,
+      });
+      localStorage.setItem(next, JSON.stringify(res.data));
+    } catch (error) {
+      console.log(error);
+    }
   }
 };
 
 export const anteriorPokemonAccion = () => async (dispatch, getState) => {
   const { previous } = getState().pokemones;
 
-  try {
-    const res = await axios.get(previous);
+  if (localStorage.getItem(previous)) {
     dispatch({
-      type: SIGUIENTE_POKEMONES_EXITO,
-      payload: res.data,
+      type: OBTENER_POKEMONES_EXITO,
+      payload: JSON.parse(localStorage.getItem(previous)),
     });
-  } catch (error) {
-    console.log(error);
+  } else {
+    try {
+      const res = await axios.get(previous);
+      dispatch({
+        type: SIGUIENTE_POKEMONES_EXITO,
+        payload: res.data,
+      });
+      localStorage.setItem(previous, JSON.stringify(res.data));
+    } catch (error) {
+      console.log(error);
+    }
   }
 };
