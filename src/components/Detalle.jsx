@@ -20,7 +20,7 @@ const Detalle = () => {
         <img src={pokemon.foto} className="img-fluid" alt="" />
         <div className="card-title text-uppercase">{pokemon.nombre}</div>
         <p className="card-text">
-          Ato: {pokemon.alto}| Ancho: {pokemon.ancho}
+          Ato: {pokemon.alto} | Ancho: {pokemon.ancho}
         </p>
       </div>
     </div>
