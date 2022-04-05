@@ -45,10 +45,8 @@ export const unPokeDetalleAccion =
         type: POKE_INFO_EXITO,
         payload: JSON.parse(localStorage.getItem(url)),
       });
-      console.log("Desde localstorage");
     } else {
       try {
-        console.log("Desde api");
         const res = await axios.get(url);
 
         dispatch({

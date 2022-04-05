@@ -3,9 +3,11 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 
 import pokesReducer from "./pokeDucks";
+import usuarioReducer, { leerUsuarioActivoAccion } from "./usuarioDucks";
 
 const rootReducer = combineReducers({
   pokemones: pokesReducer,
+  usuario: usuarioReducer,
 });
 
 export default function generateStore() {
@@ -13,5 +15,6 @@ export default function generateStore() {
     rootReducer,
     composeWithDevTools(applyMiddleware(thunk))
   );
+  leerUsuarioActivoAccion()(store.dispatch);
   return store;
 }
