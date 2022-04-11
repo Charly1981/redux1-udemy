@@ -1,4 +1,4 @@
-import { auth, firebase } from "../firebase";
+import { auth, firebase, db } from "../firebase";
 
 // data inicial
 const dataInicial = {
@@ -39,20 +39,33 @@ export const ingresoUsuarioAccion = () => async (dispatch) => {
   try {
     const provider = new firebase.auth.GoogleAuthProvider();
     const res = await auth.signInWithPopup(provider);
-    dispatch({
-      type: USUARIO_EXITO,
-      payload: {
-        uid: res.user.uid,
-        email: res.user.email,
-      },
-    });
-    localStorage.setItem(
-      "usuario",
-      JSON.stringify({
-        uid: res.user.uid,
-        email: res.user.email,
-      })
-    );
+
+    console.log(res.user);
+
+    const usuario = {
+      uid: res.user.uid,
+      email: res.user.email,
+      displayName: res.user.displayName,
+      photoURL: res.user.photoURL,
+    };
+
+    const usuarioDB = await db.collection("usuarios").doc(res.user.email).get();
+    if (usuarioDB.exists) {
+      //Cuando existe el usuario en Firestore
+      dispatch({
+        type: USUARIO_EXITO,
+        payload: usuarioDB.data(),
+      });
+      localStorage.setItem("usuario", JSON.stringify(usuarioDB.data()));
+    } else {
+      // No existe el usuario en Firestore
+      await db.collection("usuarios").doc(res.user.email).set(usuario);
+      dispatch({
+        type: USUARIO_EXITO,
+        payload: usuario,
+      });
+      localStorage.setItem("usuario", JSON.stringify(usuario));
+    }
   } catch (error) {
     console.log(error);
     dispatch({
