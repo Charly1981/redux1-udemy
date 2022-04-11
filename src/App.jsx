@@ -2,6 +2,8 @@ import React from "react";
 import Pokemones from "./components/Pokemones";
 import Login from "./components/Login";
 import { auth } from "./firebase";
+import Navbar from "./components/Navbar";
+import Perfil from "./components/Perfil";
 
 import {
   BrowserRouter as Router,
@@ -9,7 +11,6 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import Navbar from "./components/Navbar";
 
 function App() {
   // Firebase
@@ -47,6 +48,7 @@ function App() {
         <Navbar />
         <Switch>
           <RutaPrivada component={Pokemones} path="/" exact />
+          <RutaPrivada component={Perfil} path="/perfil" exact />
           <Route component={Login} path="/login" exact />
         </Switch>
       </div>
